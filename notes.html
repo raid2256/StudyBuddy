@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Notes</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>📓 Notes</h1>
+  <form id="noteForm">
+    <textarea id="noteText" placeholder="Write your notes here..." required></textarea>
+    <button type="submit">Save Note</button>
+  </form>
+  <div id="notesContainer"></div>
+
+  <script type="module">
+    import { initializeApp } from "firebase/app";
+    import { getAnalytics } from "firebase/analytics";
+    import { getAuth, onAuthStateChanged } from "firebase/auth";
+    import { getFirestore, collection, addDoc, query, where, getDocs } from "firebase/firestore";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAWIxHEaMb8_m-EyzbxYIZ1DqvLqm6nZUA",
+      authDomain: "studybuddy-52db4.firebaseapp.com",
+      projectId: "studybuddy-52db4",
+      storageBucket: "studybuddy-52db4.firebasestorage.app",
+      messagingSenderId: "790930126611",
+      appId: "1:790930126611:web:bfc3cb82ee4b5e6397cce6",
+      measurementId: "G-WT8NSSQCPR"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    onAuthStateChanged(auth, user => {
+      if (!user) return window.location.href = "index.html";
+
+      const noteForm = document.getElementById("noteForm");
+      const notesContainer = document.getElementById("notesContainer");
+
+      noteForm.addEventListener("submit", async e => {
+        e.preventDefault();
+        const text = document.getElementById("noteText").value;
+
+        await addDoc(collection(db, "notes"), {
+          uid: user.uid,
+          text,
+          created: Date.now()
+        });
+
+        noteForm.reset();
+        loadNotes();
+      });
+
+      async function loadNotes() {
+        notesContainer.innerHTML = "";
+        const q = query(collection(db, "notes"), where("uid", "==", user.uid));
+        const snapshot = await getDocs(q);
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const note = document.createElement("div");
+          note.className = "note";
+          note.textContent = data.text;
+          notesContainer.appendChild(note);
+        });
+      }
+
+      loadNotes();
+    });
+  </script>
+</body>
+</html>
