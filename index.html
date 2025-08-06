@@ -3,12 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Login System</title>
-  <style>
-    body { font-family: Arial; padding: 20px; }
-    form { margin-bottom: 20px; }
-    input { margin: 5px 0; display: block; }
-    .error { color: red; }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <h2>Sign Up</h2>
@@ -17,6 +12,7 @@
     <input type="password" id="signupPass" placeholder="Password" required>
     <button type="submit">Sign Up</button>
     <div id="signupError" class="error"></div>
+    <div id="signupSuccess" class="success"></div>
   </form>
 
   <h2>Log In</h2>
@@ -36,9 +32,11 @@
 
       if (localStorage.getItem(user)) {
         document.getElementById("signupError").textContent = "Username already exists.";
+        document.getElementById("signupSuccess").textContent = "";
       } else {
         localStorage.setItem(user, pass);
-        document.getElementById("signupError").textContent = "Sign-up successful!";
+        document.getElementById("signupError").textContent = "";
+        document.getElementById("signupSuccess").textContent = "Sign-up successful!";
       }
     });
 
