@@ -2,28 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Login System with Firebase</title>
+  <title>StudyBuddy Login</title>
   <link rel="stylesheet" href="style.css">
-
-  <!-- 🔥 Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-analytics.js"></script>
-
-  <!-- 🔧 Firebase Config -->
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyAWIxHEaMb8_m-EyzbxYIZ1DqvLqm6nZUA",
-      authDomain: "studybuddy-52db4.firebaseapp.com",
-      projectId: "studybuddy-52db4",
-      storageBucket: "studybuddy-52db4.firebasestorage.app",
-      messagingSenderId: "790930126611",
-      appId: "1:790930126611:web:bfc3cb82ee4b5e6397cce6"
-      measurementId: "G-WT8NSSQCPR"
-    };
-
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-  </script>
 </head>
 <body>
   <h2>Sign Up</h2>
@@ -42,9 +22,25 @@
     <div id="loginError" class="error"></div>
   </form>
 
-  <!-- 🔐 Firebase Auth Logic -->
-  <script>
-    const auth = firebase.auth();
+  <!-- 🔥 Firebase Setup & Auth Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-analytics.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAWIxHEaMb8_m-EyzbxYIZ1DqvLqm6nZUA",
+      authDomain: "studybuddy-52db4.firebaseapp.com",
+      projectId: "studybuddy-52db4",
+      storageBucket: "studybuddy-52db4.firebasestorage.app",
+      messagingSenderId: "790930126611",
+      appId: "1:790930126611:web:bfc3cb82ee4b5e6397cce6",
+      measurementId: "G-WT8NSSQCPR"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const auth = getAuth(app);
 
     // Sign Up
     document.getElementById("signupForm").addEventListener("submit", function(e) {
@@ -52,7 +48,7 @@
       const email = document.getElementById("signupUser").value;
       const password = document.getElementById("signupPass").value;
 
-      auth.createUserWithEmailAndPassword(email, password)
+      createUserWithEmailAndPassword(auth, email, password)
         .then(userCredential => {
           alert("Sign-up successful!");
         })
@@ -67,7 +63,7 @@
       const email = document.getElementById("loginUser").value;
       const password = document.getElementById("loginPass").value;
 
-      auth.signInWithEmailAndPassword(email, password)
+      signInWithEmailAndPassword(auth, email, password)
         .then(userCredential => {
           window.location.href = "dashboard.html";
         })
