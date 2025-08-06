@@ -3,17 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <title>Dashboard</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1 id="welcomeMsg">Welcome!</h1>
-  <button onclick="logout()">Log Out</button>
+  <div class="dashboard-container">
+    <h1 id="welcomeMsg">Welcome!</h1>
+    <button onclick="logout()">Log Out</button>
+  </div>
 
   <script>
     const user = localStorage.getItem("loggedInUser");
     if (user) {
       document.getElementById("welcomeMsg").textContent = `Welcome, ${user}!`;
     } else {
-      window.location.href = "index.html"; // Redirect if not logged in
+      window.location.href = "index.html";
     }
 
     function logout() {
