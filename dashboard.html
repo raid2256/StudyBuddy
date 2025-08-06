@@ -1,48 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Study Buddy Dashboard</title>
-  <link rel="stylesheet" href="dashboard.css">
+  <meta charset="UTF-8">
+  <title>Dashboard</title>
 </head>
 <body>
-  <header>
-    <h1>📚 Study Buddy Dashboard</h1>
-    <nav>
-      <a href="index.html">Log Out</a>
-      <span id="welcomeUser"></span>
-    </nav>
-  </header>
-
-  <main>
-    <section class="card-section">
-      <h2>Your Flashcards</h2>
-      <div class="card-grid">
-        <div class="card">Math: Fractions</div>
-        <div class="card">Science: Cells</div>
-        <div class="card">History: WWI</div>
-      </div>
-    </section>
-
-    <section class="quiz-section">
-      <h2>Quick Quizzes</h2>
-      <button>Start Math Quiz</button>
-      <button>Start Science Quiz</button>
-    </section>
-
-    <section class="progress-section">
-      <h2>Progress</h2>
-      <p>🔥 Streak: 3 days</p>
-      <p>📈 Completion: 45%</p>
-    </section>
-  </main>
+  <h1 id="welcomeMsg">Welcome!</h1>
+  <button onclick="logout()">Log Out</button>
 
   <script>
-    // Optional: Show logged-in username
     const user = localStorage.getItem("loggedInUser");
     if (user) {
-      document.getElementById("welcomeUser").textContent = `Welcome, ${user}!`;
+      document.getElementById("welcomeMsg").textContent = `Welcome, ${user}!`;
     } else {
       window.location.href = "index.html"; // Redirect if not logged in
+    }
+
+    function logout() {
+      localStorage.removeItem("loggedInUser");
+      window.location.href = "index.html";
     }
   </script>
 </body>
