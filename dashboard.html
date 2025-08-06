@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Dashboard</title>
+  <title>StudyBuddy Dashboard</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,17 +11,35 @@
     <button onclick="logout()">Log Out</button>
   </div>
 
-  <script>
-    const user = localStorage.getItem("loggedInUser");
-    if (user) {
-      document.getElementById("welcomeMsg").textContent = `Welcome, ${user}!`;
-    } else {
-      window.location.href = "index.html";
-    }
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAWIxHEaMb8_m-EyzbxYIZ1DqvLqm6nZUA",
+      authDomain: "studybuddy-52db4.firebaseapp.com",
+      projectId: "studybuddy-52db4",
+      storageBucket: "studybuddy-52db4.firebasestorage.app",
+      messagingSenderId: "790930126611",
+      appId: "1:790930126611:web:bfc3cb82ee4b5e6397cce6",
+      measurementId: "G-WT8NSSQCPR"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        document.getElementById("welcomeMsg").textContent = `Welcome, ${user.email}!`;
+      } else {
+        window.location.href = "index.html";
+      }
+    });
 
     function logout() {
-      localStorage.removeItem("loggedInUser");
-      window.location.href = "index.html";
+      signOut(auth).then(() => {
+        window.location.href = "index.html";
+      });
     }
   </script>
 </body>
