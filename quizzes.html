@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Quizzes</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>📝 Quiz</h1>
+  <div id="quizContainer"></div>
+  <button onclick="submitQuiz()">Submit</button>
+  <div id="result"></div>
+
+  <script>
+    const questions = [
+      { q: "What is the capital of France?", a: "Paris" },
+      { q: "2 + 2 = ?", a: "4" },
+      { q: "Who wrote Hamlet?", a: "Shakespeare" }
+    ];
+
+    const quizContainer = document.getElementById("quizContainer");
+
+    questions.forEach((item, i) => {
+      const div = document.createElement("div");
+      div.innerHTML = `<p>${item.q}</p><input type="text" id="q${i}">`;
+      quizContainer.appendChild(div);
+    });
+
+    function submitQuiz() {
+      let score = 0;
+      questions.forEach((item, i) => {
+        const answer = document.getElementById(`q${i}`).value.trim().toLowerCase();
+        if (answer === item.a.toLowerCase()) score++;
+      });
+      document.getElementById("result").textContent = `You scored ${score}/${questions.length}`;
+    }
+  </script>
+</body>
+</html>
