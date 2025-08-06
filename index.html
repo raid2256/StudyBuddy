@@ -1,33 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Study Buddy Access</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Login System</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    form { margin-bottom: 20px; }
+    input { margin: 5px 0; display: block; }
+    .error { color: red; }
+  </style>
 </head>
 <body>
-  <div class="access-container">
-    <h1>🔐 Welcome to Study Buddy</h1>
+  <h2>Sign Up</h2>
+  <form id="signupForm">
+    <input type="text" id="signupUser" placeholder="Username" required>
+    <input type="password" id="signupPass" placeholder="Password" required>
+    <button type="submit">Sign Up</button>
+    <div id="signupError" class="error"></div>
+  </form>
 
-    <div class="form-section">
-      <h2>Log In</h2>
-      <form id="loginForm">
-        <input type="text" id="loginUser" placeholder="Username" required>
-        <input type="password" id="loginPass" placeholder="Password" required>
-        <button type="submit">Log In</button>
-      </form>
-      <p id="loginError" class="error-msg"></p>
-    </div>
-
-    <div class="form-section">
-      <h2>Sign Up</h2>
-      <form id="signupForm">
-        <input type="text" id="signupUser" placeholder="New Username" required>
-        <input type="password" id="signupPass" placeholder="New Password" required>
-        <button type="submit">Sign Up</button>
-      </form>
-      <p id="signupError" class="error-msg"></p>
-    </div>
-  </div>
+  <h2>Log In</h2>
+  <form id="loginForm">
+    <input type="text" id="loginUser" placeholder="Username" required>
+    <input type="password" id="loginPass" placeholder="Password" required>
+    <button type="submit">Log In</button>
+    <div id="loginError" class="error"></div>
+  </form>
 
   <script>
     // Sign Up
@@ -40,7 +38,7 @@
         document.getElementById("signupError").textContent = "Username already exists.";
       } else {
         localStorage.setItem(user, pass);
-        document.getElementById("signupError").textContent = "Account created! You can now log in.";
+        document.getElementById("signupError").textContent = "Sign-up successful!";
       }
     });
 
@@ -52,6 +50,7 @@
 
       const storedPass = localStorage.getItem(user);
       if (storedPass && storedPass === pass) {
+        localStorage.setItem("loggedInUser", user);
         window.location.href = "dashboard.html";
       } else {
         document.getElementById("loginError").textContent = "Invalid username or password.";
