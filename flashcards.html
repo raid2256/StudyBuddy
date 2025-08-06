@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Flashcards</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>🃏 Flashcards</h1>
+  <form id="cardForm">
+    <input type="text" id="front" placeholder="Front (e.g. Term)" required>
+    <input type="text" id="back" placeholder="Back (e.g. Definition)" required>
+    <button type="submit">Add Flashcard</button>
+  </form>
+  <div id="cardsContainer"></div>
+
+  <script type="module">
+    import { initializeApp } from "firebase/app";
+    import { getAnalytics } from "firebase/analytics";
+    import { getAuth, onAuthStateChanged } from "firebase/auth";
+    import { getFirestore, collection, addDoc, query, where, getDocs } from "firebase/firestore";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAWIxHEaMb8_m-EyzbxYIZ1DqvLqm6nZUA",
+      authDomain: "studybuddy-52db4.firebaseapp.com",
+      projectId: "studybuddy-52db4",
+      storageBucket: "studybuddy-52db4.firebasestorage.app",
+      messagingSenderId: "790930126611",
+      appId: "1:790930126611:web:bfc3cb82ee4b5e6397cce6",
+      measurementId: "G-WT8NSSQCPR"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    onAuthStateChanged(auth, user => {
+      if (!user) return window.location.href = "index.html";
+
+      const cardForm = document.getElementById("cardForm");
+      const cardsContainer = document.getElementById("cardsContainer");
+
+      cardForm.addEventListener("submit", async e => {
+        e.preventDefault();
+        const front = document.getElementById("front").value;
+        const back = document.getElementById("back").value;
+
+        await addDoc(collection(db, "flashcards"), {
+          uid: user.uid,
+          front,
+          back,
+          created: Date.now()
+        });
+
+        cardForm.reset();
+        loadCards();
+      });
+
+      async function loadCards() {
+        cardsContainer.innerHTML = "";
+        const q = query(collection(db, "flashcards"), where("uid", "==", user.uid));
+        const snapshot = await getDocs(q);
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const card = document.createElement("div");
+          card.className = "flashcard";
+          card.innerHTML = `<strong>${data.front}</strong><br>${data.back}`;
+          cardsContainer.appendChild(card);
+        });
+      }
+
+      loadCards();
+    });
+  </script>
+</body>
+</html>
