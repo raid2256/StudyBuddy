@@ -1,4 +1,3 @@
-/* style.css */
 body {
   font-family: 'Segoe UI', sans-serif;
   background: #f0f4f8;
@@ -52,17 +51,6 @@ button:hover {
   margin-top: 5px;
 }
 
-.success {
-  color: green;
-  font-size: 0.9em;
-  margin-top: 5px;
-}
-
-#welcomeMsg {
-  font-size: 1.5em;
-  margin-bottom: 20px;
-}
-
 .dashboard-container {
   background: #fff;
   padding: 30px;
@@ -70,4 +58,9 @@ button:hover {
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   width: 400px;
   text-align: center;
+}
+
+#welcomeMsg {
+  font-size: 1.5em;
+  margin-bottom: 20px;
 }
